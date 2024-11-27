@@ -1,0 +1,45 @@
+# Dépendances
+node_modules/
+/node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Variables d'environnement
+.env
+.env.local
+.env.*.local
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers de log
+logs
+*.log
+
+# Dossiers de build et de production
+/dist
+/build
+
+# Fichiers de couverture de tests
+coverage/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# IDEs et éditeurs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Fichiers de debug
+debug/
+.debug/
+
+# Autres
+*.pid
+*.seed
+*.pid.lock
