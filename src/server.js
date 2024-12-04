@@ -2,10 +2,15 @@
 require('dotenv').config();
 
 const express = require('express');
+const path = require('path');
 const connectDatabase = require('./config/database');
 const routes = require('./routes');
 
 const app = express();
+
+// Configuration EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Middleware pour parser le JSON
 // Configuration de base d'Express
@@ -16,7 +21,10 @@ app.use('/api', routes);
 
 // Route simple pour tester
 app.get('/', (req, res) => {
-    res.json({ message: 'Bienvenue sur l\'API du Port de Plaisance Russell' });
+    res.render('pages/home');
+});
+app.get('/dashboard', (req, res) => {
+    res.render('pages/dashboard');
 });
 
 // On connecte d'abord la base de données, puis on démarre le serveur
