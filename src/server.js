@@ -3,11 +3,16 @@ require('dotenv').config();
 
 const express = require('express');
 const connectDatabase = require('./config/database');
+const routes = require('./routes');
 
 const app = express();
 
+// Middleware pour parser le JSON
 // Configuration de base d'Express
 app.use(express.json());
+
+// Montage des routes avec un préfixe /api
+app.use('/api', routes);
 
 // Route simple pour tester
 app.get('/', (req, res) => {
