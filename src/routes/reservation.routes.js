@@ -1,11 +1,16 @@
 const express = require('express');
-const router = express.Router({ mergeParams: true }); // Important pour accéder aux paramètres du parent
+const router = express.Router({ mergeParams: true });
 const reservationController = require('../controllers/reservation.controller');
+const authMiddleware = require('../middlewares/auth.middleware');
+const isAdmin = require('../middlewares/admin.middleware');
 
-// Routes des réservations
-router.get('/', reservationController.getAllReservations);
-router.post('/', reservationController.createReservation);
-router.get('/:id', reservationController.getReservationById);
-router.delete('/:id', reservationController.deleteReservation);
+// Protection de base
+router.use(authMiddleware);
+
+// Routes admin uniquement
+router.get('/', isAdmin, reservationController.getAllReservations);
+router.post('/', isAdmin, reservationController.createReservation);
+router.get('/:id', isAdmin, reservationController.getReservationById);
+router.delete('/:id', isAdmin, reservationController.deleteReservation);
 
 module.exports = router;

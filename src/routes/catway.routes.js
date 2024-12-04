@@ -1,16 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const catwayController = require('../controllers/catway.controller');
+const authMiddleware = require('../middlewares/auth.middleware');
+const isAdmin = require('../middlewares/admin.middleware');
 const reservationRoutes = require('./reservation.routes');
 
-// Routes des catways maintenant connectées au contrôleur
-router.get('/', catwayController.getAllCatways);
-router.post('/', catwayController.createCatway);
-router.get('/:id', catwayController.getCatwayById);
-router.put('/:id', catwayController.updateCatway);
-router.delete('/:id', catwayController.deleteCatway);
+// Appliquer l'authentification à toutes les routes
+router.use(authMiddleware);
 
-// On garde les routes de réservation
+// Routes accessibles à tous les utilisateurs authentifiés
+router.get('/', catwayController.getAllCatways);
+router.get('/:id', catwayController.getCatwayById);
+
+// Routes réservées aux administrateurs
+router.post('/', isAdmin, catwayController.createCatway);
+router.put('/:id', isAdmin, catwayController.updateCatway);
+router.delete('/:id', isAdmin, catwayController.deleteCatway);
+
+// Routes des réservations (en sous-ressource)
 router.use('/:catwayId/reservations', reservationRoutes);
 
 module.exports = router;
