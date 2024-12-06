@@ -2,23 +2,20 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Liste des Catways - Port Russell</title>
+    <title>Liste des Réservations - Port Russell</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
             <a class="navbar-brand" href="/dashboard">Tableau de bord</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/catways">Catways</a>
+                        <a class="nav-link" href="/catways">Catways</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/reservations">Réservations</a>
+                        <a class="nav-link active" href="/reservations">Réservations</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -32,10 +29,10 @@
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Liste des Catways</h1>
+            <h1>Réservations</h1>
             <div>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCatwayModal">
-                    + Nouveau Catway
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addReservationModal">
+                    + Nouvelle Réservation
                 </button>
             </div>
         </div>
@@ -44,28 +41,30 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Numéro</th>
-                        <th>Type</th>
-                        <th>État</th>
+                        <th>Catway N°</th>
+                        <th>Client</th>
+                        <th>Bateau</th>
+                        <th>Arrivée</th>
+                        <th>Départ</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="catwaysList">
+                <tbody id="reservationsList">
                     <!-- Rempli dynamiquement -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Modal Détails Catway -->
-    <div class="modal fade" id="catwayDetailsModal" tabindex="-1">
+    <!-- Modal Détails Réservation -->
+    <div class="modal fade" id="reservationDetailsModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Détails du Catway</h5>
+                    <h5 class="modal-title">Détails de la Réservation</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body" id="catwayDetailsContent">
+                <div class="modal-body" id="reservationDetailsContent">
                     <!-- Contenu dynamique -->
                 </div>
             </div>
@@ -80,8 +79,9 @@
                 window.location.href = '/';
                 return null;
             }
-
+    
             try {
+                // Vérifier uniquement l'expiration du token
                 const tokenData = JSON.parse(atob(token.split('.')[1]));
                 const currentTime = Math.floor(Date.now() / 1000);
                 if (tokenData.exp && tokenData.exp < currentTime) {
@@ -101,68 +101,80 @@
             window.location.href = '/';
         }
 
-        async function loadCatways() {
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleString('fr-FR');
+        }
+
+        async function loadReservations() {
             const token = checkAuth();
             try {
-                const response = await fetch('/api/catways', {
+                const response = await fetch('/api/reservations/all', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                const catways = await response.json();
+                const reservations = await response.json();
                 
-                const tbody = document.getElementById('catwaysList');
+                const tbody = document.getElementById('reservationsList');
                 tbody.innerHTML = '';
                 
-                catways.forEach(catway => {
+                reservations.forEach(reservation => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${catway.catwayNumber}</td>
-                        <td>${catway.type}</td>
-                        <td>${catway.catwayState}</td>
+                        <td>${reservation.catwayNumber}</td>
+                        <td>${reservation.clientName}</td>
+                        <td>${reservation.boatName}</td>
+                        <td>${formatDate(reservation.checkIn)}</td>
+                        <td>${formatDate(reservation.checkOut)}</td>
                         <td>
-                            <button class="btn btn-sm btn-info" onclick="showDetails('${catway._id}')">Détails</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteCatway('${catway._id}')">Supprimer</button>
+                            <button class="btn btn-sm btn-info" onclick="showDetails('${reservation._id}')">
+                                Détails
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteReservation('${reservation._id}')">
+                                Supprimer
+                            </button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('Erreur lors du chargement des catways');
+                alert('Erreur lors du chargement des réservations');
             }
         }
 
-        async function showDetails(catwayId) {
+        async function showDetails(reservationId) {
             const token = checkAuth();
             try {
-                const response = await fetch(`/api/catways/${catwayId}`, {
+                const response = await fetch(`/api/reservations/${reservationId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                const catway = await response.json();
+                const reservation = await response.json();
                 
-                document.getElementById('catwayDetailsContent').innerHTML = `
-                    <p><strong>Numéro:</strong> ${catway.catwayNumber}</p>
-                    <p><strong>Type:</strong> ${catway.type}</p>
-                    <p><strong>État:</strong> ${catway.catwayState}</p>
-                    <p><strong>Créé le:</strong> ${new Date(catway.createdAt).toLocaleDateString()}</p>
+                document.getElementById('reservationDetailsContent').innerHTML = `
+                    <p><strong>Catway N°:</strong> ${reservation.catwayNumber}</p>
+                    <p><strong>Client:</strong> ${reservation.clientName}</p>
+                    <p><strong>Bateau:</strong> ${reservation.boatName}</p>
+                    <p><strong>Arrivée:</strong> ${formatDate(reservation.checkIn)}</p>
+                    <p><strong>Départ:</strong> ${formatDate(reservation.checkOut)}</p>
+                    <p><strong>Créée le:</strong> ${formatDate(reservation.createdAt)}</p>
                 `;
                 
-                new bootstrap.Modal(document.getElementById('catwayDetailsModal')).show();
+                new bootstrap.Modal(document.getElementById('reservationDetailsModal')).show();
             } catch (error) {
                 console.error('Erreur:', error);
                 alert('Erreur lors du chargement des détails');
             }
         }
 
-        async function deleteCatway(catwayId) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer ce catway ?')) return;
+        async function deleteReservation(reservationId) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')) return;
             
             const token = checkAuth();
             try {
-                const response = await fetch(`/api/catways/${catwayId}`, {
+                const response = await fetch(`/api/catways/reservations/${reservationId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -170,7 +182,7 @@
                 });
                 
                 if (response.ok) {
-                    loadCatways();
+                    loadReservations();
                 } else {
                     const error = await response.json();
                     alert(error.message || 'Erreur lors de la suppression');
@@ -183,7 +195,10 @@
 
         // Au chargement de la page
         document.addEventListener('DOMContentLoaded', () => {
-            loadCatways();
+            const token = checkAuth();
+            if (token) {
+                loadReservations();
+            }
         });
     </script>
 </body>

@@ -1,6 +1,5 @@
 const Reservation = require('../models/reservation.model');
 const Catway = require('../models/catway.model');
-
 const reservationController = {
     // Obtenir toutes les réservations d'un catway spécifique
     getAllReservations: async (req, res) => {
@@ -11,7 +10,6 @@ const reservationController = {
             if (!catway) {
                 return res.status(404).json({ message: 'Catway non trouvé' });
             }
-
             // Récupère toutes les réservations pour ce catway
             const reservations = await Reservation.find({ catwayNumber: catway.catwayNumber });
             res.status(200).json(reservations);
@@ -19,7 +17,15 @@ const reservationController = {
             res.status(500).json({ message: error.message });
         }
     },
-
+    // Obtenir toutes les réservations de tous les catways
+    getAllReservationsGlobal: async (req, res) => {
+        try {
+            const reservations = await Reservation.find().sort({ checkIn: -1 });
+            res.status(200).json(reservations);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
     // Créer une nouvelle réservation
     createReservation: async (req, res) => {
         try {
@@ -29,7 +35,6 @@ const reservationController = {
             if (!catway) {
                 return res.status(404).json({ message: 'Catway non trouvé' });
             }
-
             // Vérifie la disponibilité
             const { checkIn, checkOut } = req.body;
             const isAvailable = await Reservation.checkAvailability(
@@ -37,13 +42,11 @@ const reservationController = {
                 new Date(checkIn),
                 new Date(checkOut)
             );
-
             if (!isAvailable) {
-                return res.status(400).json({ 
-                    message: 'Le catway n\'est pas disponible pour ces dates' 
+                return res.status(400).json({
+                    message: 'Le catway n\'est pas disponible pour ces dates'
                 });
             }
-
             // Crée la réservation
             const newReservation = new Reservation({
                 ...req.body,
@@ -55,7 +58,6 @@ const reservationController = {
             res.status(400).json({ message: error.message });
         }
     },
-
     // Obtenir une réservation spécifique
     getReservationById: async (req, res) => {
         try {
@@ -68,7 +70,6 @@ const reservationController = {
             res.status(500).json({ message: error.message });
         }
     },
-
     // Supprimer une réservation
     deleteReservation: async (req, res) => {
         try {
@@ -76,7 +77,6 @@ const reservationController = {
             if (!reservation) {
                 return res.status(404).json({ message: 'Réservation non trouvée' });
             }
-
             await Reservation.findByIdAndDelete(req.params.id);
             res.status(200).json({ message: 'Réservation supprimée avec succès' });
         } catch (error) {
@@ -84,5 +84,4 @@ const reservationController = {
         }
     }
 };
-
 module.exports = reservationController;

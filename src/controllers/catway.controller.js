@@ -1,5 +1,4 @@
 const Catway = require('../models/catway.model');
-
 // Ce contrôleur contient toutes les méthodes pour gérer les catways
 const catwayController = {
     // Obtenir la liste de tous les catways
@@ -11,16 +10,15 @@ const catwayController = {
             res.status(500).json({ message: error.message });
         }
     },
-
     // Créer un nouveau catway
     createCatway: async (req, res) => {
         try {
             // Création d'un nouveau catway avec les données de la requête
             const newCatway = new Catway(req.body);
-            
+           
             // Sauvegarde dans la base de données
             const savedCatway = await newCatway.save();
-            
+           
             // Réponse avec le catway créé
             res.status(201).json(savedCatway);
         } catch (error) {
@@ -28,7 +26,6 @@ const catwayController = {
             res.status(400).json({ message: error.message });
         }
     },
-
     // Obtenir un catway spécifique par son ID
     getCatwayById: async (req, res) => {
         try {
@@ -41,7 +38,6 @@ const catwayController = {
             res.status(500).json({ message: error.message });
         }
     },
-
     // Mettre à jour un catway
     updateCatway: async (req, res) => {
         try {
@@ -58,7 +54,6 @@ const catwayController = {
             res.status(400).json({ message: error.message });
         }
     },
-
     // Supprimer un catway
     deleteCatway: async (req, res) => {
         try {
@@ -72,5 +67,4 @@ const catwayController = {
         }
     }
 };
-
 module.exports = catwayController;

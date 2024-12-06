@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails Réservation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h2>Détails de la Réservation</h2>
+            </div>
+            <div class="card-body" id="reservationDetails">
+                <!-- Contenu dynamique -->
+            </div>
+            <div class="card-footer">
+                <button id="deleteBtn" class="btn btn-danger" onclick="deleteReservation()" style="display: none;">
+                    Supprimer
+                </button>
+                <a href="/reservation" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentReservation = null;
+        function checkAuth() {
+            return localStorage.getItem('token');
+        }
+        // Vérifiez si admin et affichez le bouton
+        const token = checkAuth();
+        const tokenData = JSON.parse(atob(token.split('.')[1]));
+        console.log('Token data:', tokenData); // Pour debug
+       
+        if (tokenData.role === 'admin') {
+            document.getElementById('deleteBtn').style.display = 'inline-block';
+        }
+        // Reste du code pour charger et supprimer la réservation...
+    </script>
+</body>
+</html>
