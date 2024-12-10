@@ -21,6 +21,11 @@ class DashboardManager {
                 e.preventDefault();
                 this.createReservation(e.target);
             });
+            // Ajout de la gestion du formulaire Utilisateur
+            document.getElementById('userForm')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.createUser(e.target);
+            });
         }
     
         async loadCatwayOptions() {
@@ -102,6 +107,42 @@ class DashboardManager {
             } catch (error) {
                 console.error('Erreur:', error);
                 alert('Erreur lors de la création de la réservation');
+            }
+        }
+
+        // Nouvelle méthode pour créer un utilisateur
+        async createUser(form) {
+            const token = AuthService.checkAuth();
+            const formData = new FormData(form);
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                // On récupère la réponse en JSON pour avoir accès aux messages d'erreur éventuels
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Utilisateur créé avec succès');
+                    form.reset(); // Réinitialise le formulaire après succès
+                } else {
+                    // Si la réponse n'est pas ok, on affiche le message d'erreur du serveur
+                    throw new Error(data.message || 'Erreur lors de la création de l\'utilisateur');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la création de l\'utilisateur:', error);
+                alert(error.message || 'Erreur lors de la création de l\'utilisateur');
             }
         }
     }

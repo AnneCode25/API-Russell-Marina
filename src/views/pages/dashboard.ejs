@@ -10,6 +10,9 @@
         <div class="col-md-6 mb-4">
             <%- include('../partials/dashboard/reservation-form') %>
         </div>
+        <div class="col-md-4 mb-4">
+            <%- include('../partials/dashboard/user-form') %>
+        </div>
     </div>
 </div>
 
@@ -19,5 +22,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         window.dashboardManager = new DashboardManager();
+        window.userManager = new UserManager();
     });
 </script>

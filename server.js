@@ -70,6 +70,10 @@ app.get('/reservation', (req, res) => {
     res.render('pages/reservation-details');
 });
 
+app.get('/users', (req, res) => {
+    res.render('pages/users');
+});
+
 // Fonction de démarrage du serveur
 const startServer = async () => {
     try {
