@@ -11,5 +11,6 @@ router.use(authMiddleware);
 router.get('/all', authMiddleware, reservationController.getAllReservationsGlobal);
 router.post('/', reservationController.createReservation);
 router.delete('/:id', reservationController.deleteReservation);
+router.get('/', reservationController.getReservationsByCatwayId);
 
 module.exports = router;

@@ -1,0 +1,27 @@
+<!-- views/partials/dashboard/catway-form.ejs -->
+<div class="card">
+        <div class="card-header">
+            <h3>Gestion des Catways</h3>
+        </div>
+        <div class="card-body">
+            <form id="catwayForm" class="mb-4">
+                <h4>Créer/Modifier un Catway</h4>
+                <div class="mb-3">
+                    <label class="form-label">Numéro</label>
+                    <input type="number" class="form-control" name="catwayNumber" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Type</label>
+                    <select class="form-control" name="type" required>
+                        <option value="long">Long</option>
+                        <option value="short">Court</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">État</label>
+                    <textarea class="form-control" name="catwayState" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </form>
+        </div>
+    </div>

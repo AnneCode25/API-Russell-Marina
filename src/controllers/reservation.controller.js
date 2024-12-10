@@ -12,6 +12,25 @@ const reservationController = {
         }
     },
 
+    getReservationsByCatwayId: async (req, res) => {
+        try {
+            // Récupérer d'abord le catway pour avoir son numéro
+            const catway = await Catway.findById(req.params.catwayId);
+            if (!catway) {
+                return res.status(404).json({ message: 'Catway non trouvé' });
+            }
+            
+            // Utiliser le numéro du catway pour trouver les réservations
+            const reservations = await Reservation.find({
+                catwayNumber: catway.catwayNumber
+            }).sort({ checkIn: -1 });
+            
+            res.status(200).json(reservations);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
     createReservation: async (req, res) => {
         try {
             const { checkIn, checkOut, catwayNumber } = req.body;
