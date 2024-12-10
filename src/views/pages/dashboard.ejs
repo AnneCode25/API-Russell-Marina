@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const select = document.getElementById('catwaySelect');
         catways.forEach(catway => {
             const option = document.createElement('option');
-            option.value = catway._id;
+            option.value = catway.catwayNumber;;
             option.textContent = `Catway ${catway.catwayNumber} (${catway.type})`;
             select.appendChild(option);
         });
@@ -145,15 +145,19 @@ document.getElementById('catwayForm').addEventListener('submit', async (e) => {
     
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+    const catwayNumber = document.getElementById('catwaySelect').value;
     
     try {
-        const response = await fetch('/api/catways', {
+        const response = await fetch('/api/reservations', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                ...data,
+                catwayNumber: parseInt(catwayNumber) 
+            })
         });
         
         if (response.ok) {
