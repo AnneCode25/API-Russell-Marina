@@ -1,4 +1,5 @@
 const Catway = require('../models/catway.model');
+const Reservation = require('../models/reservation.model');
 // Ce contrôleur contient toutes les méthodes pour gérer les catways
 const catwayController = {
     // Obtenir la liste de tous les catways
@@ -57,11 +58,30 @@ const catwayController = {
     // Supprimer un catway
     deleteCatway: async (req, res) => {
         try {
-            const deletedCatway = await Catway.findByIdAndDelete(req.params.id);
-            if (!deletedCatway) {
+            // D'abord, vérifions s'il existe des réservations pour ce catway
+            const catway = await Catway.findById(req.params.id);
+            if (!catway) {
                 return res.status(404).json({ message: 'Catway non trouvé' });
             }
+
+            // Rechercher les réservations associées à ce catway
+            const reservations = await Reservation.find({ 
+                catwayNumber: catway.catwayNumber,
+                checkOut: { $gte: new Date() } // On ne regarde que les réservations non terminées
+            });
+
+            // S'il y a des réservations actives ou futures, on empêche la suppression
+            if (reservations.length > 0) {
+                return res.status(400).json({ 
+                    message: 'Impossible de supprimer ce catway car il possède des réservations actives ou à venir',
+                    reservationsCount: reservations.length
+                });
+            }
+
+            // Si pas de réservations, on peut supprimer
+            const deletedCatway = await Catway.findByIdAndDelete(req.params.id);
             res.status(200).json({ message: 'Catway supprimé avec succès' });
+
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

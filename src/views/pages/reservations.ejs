@@ -30,11 +30,6 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Réservations</h1>
-            <div>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addReservationModal">
-                    + Nouvelle Réservation
-                </button>
-            </div>
         </div>
 
         <div class="table-responsive">
@@ -174,7 +169,7 @@
             
             const token = checkAuth();
             try {
-                const response = await fetch(`/api/catways/reservations/${reservationId}`, {
+                const response = await fetch(`/api/reservations/${reservationId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
