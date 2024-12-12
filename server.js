@@ -11,7 +11,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 
-// Imports de nos modules (notez les nouveaux chemins depuis la racine)
+// Imports de nos modules
 const connectDatabase = require('./src/config/database');
 const routes = require('./src/routes');
 const documentationRoutes = require('./src/routes/documentation.routes');

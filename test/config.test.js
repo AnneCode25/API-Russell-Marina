@@ -1,4 +1,4 @@
-// test/config.test.js
+// Imports
 require('dotenv').config();
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');

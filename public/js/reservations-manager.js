@@ -1,4 +1,3 @@
-// public/js/reservations-manager.js
 class ReservationsManager {
     constructor() {
         console.log('Initialisation du gestionnaire de réservations');

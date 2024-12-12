@@ -1,4 +1,3 @@
-// public/js/auth.js
 class AuthService {
         static checkAuth() {
             const token = localStorage.getItem('token');

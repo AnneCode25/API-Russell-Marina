@@ -1,4 +1,3 @@
-// public/js/dashboard-manager.js
 class DashboardManager {
         constructor() {
             this.init();
@@ -21,7 +20,7 @@ class DashboardManager {
                 e.preventDefault();
                 this.createReservation(e.target);
             });
-            // Ajout de la gestion du formulaire Utilisateur
+            // Gestion du formulaire Utilisateur
             document.getElementById('userForm')?.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.createUser(e.target);

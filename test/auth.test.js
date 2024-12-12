@@ -1,4 +1,4 @@
-// test/auth.test.js
+// Imports
 const assert = require('assert');
 const { setupDB, clearDB, closeDB } = require('./config.test');
 const authService = require('../src/services/auth.service');
