@@ -1,4 +1,4 @@
-// test/catway.test.js
+// Imports
 const assert = require('assert');
 const { setupDB, clearDB, closeDB } = require('./config.test');
 const catwayService = require('../src/services/catway.service');

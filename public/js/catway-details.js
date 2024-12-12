@@ -1,7 +1,6 @@
-// public/js/catway-details.js
 class CatwayManager {
     constructor() {
-        this.currentCatway = null; // On stockera l'objet catway complet
+        this.currentCatway = null;
         this.init();
     }
 

@@ -1,4 +1,3 @@
-// public/js/user-manager.js
 class UserManager {
         constructor() {
             this.usersList = document.getElementById('usersList');

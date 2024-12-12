@@ -1,5 +1,3 @@
-// public/js/catways-manager.js
-
 console.log('Le fichier catways-manager.js est chargé avec succès!');
 
 class CatwaysManager {
