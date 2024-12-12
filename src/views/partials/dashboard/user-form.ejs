@@ -1,0 +1,27 @@
+<!-- views/partials/dashboard/user-form.ejs -->
+<div class="card">
+        <div class="card-header">
+            <h3>Gestion des Utilisateurs</h3>
+        </div>
+        <div class="card-body">
+            <!-- Formulaire de création/modification d'utilisateur -->
+            <form id="userForm" class="mb-4">
+                <h4 id="userFormTitle">Créer un Utilisateur</h4>
+                <input type="hidden" name="userId" id="userId">
+                <div class="mb-3">
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="userSubmitBtn">Enregistrer</button>
+                <button type="button" class="btn btn-secondary" id="userResetBtn">Réinitialiser</button>
+            </form>
+        </div>
+    </div>

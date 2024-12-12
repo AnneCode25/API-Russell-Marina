@@ -1,0 +1,27 @@
+<!-- views/pages/dashboard.ejs -->
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="row">
+        <!-- Formulaires de gestion -->
+        <div class="col-md-6 mb-4">
+            <%- include('../partials/dashboard/catway-form') %>
+        </div>
+        <div class="col-md-6 mb-4">
+            <%- include('../partials/dashboard/reservation-form') %>
+        </div>
+        <div class="col-md-4 mb-4">
+            <%- include('../partials/dashboard/user-form') %>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script src="/js/dashboard-manager.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.dashboardManager = new DashboardManager();
+        window.userManager = new UserManager();
+    });
+</script>

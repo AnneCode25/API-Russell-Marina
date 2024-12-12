@@ -1,16 +1,16 @@
+// routes/reservation.routes.js
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const reservationController = require('../controllers/reservation.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
-const isAdmin = require('../middlewares/admin.middleware');
 
 // Protection de base
 router.use(authMiddleware);
 
-// Routes admin uniquement
-router.get('/', isAdmin, reservationController.getAllReservations);
-router.post('/', isAdmin, reservationController.createReservation);
-router.get('/:id', isAdmin, reservationController.getReservationById);
-router.delete('/:id', isAdmin, reservationController.deleteReservation);
+// Routes simplifiées
+router.get('/all', authMiddleware, reservationController.getAllReservationsGlobal);
+router.post('/', reservationController.createReservation);
+router.delete('/:id', reservationController.deleteReservation);
+router.get('/', reservationController.getReservationsByCatwayId);
 
 module.exports = router;

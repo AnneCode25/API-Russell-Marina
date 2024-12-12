@@ -2,18 +2,20 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
-const isAdmin = require('../middlewares/admin.middleware');
-
 // Routes publiques
 router.post('/register', authController.register);
 router.post('/login', authController.login);
-
-// Routes protégées par authentification
+// Routes protégées
 router.get('/profile', authMiddleware, authController.getProfile);
 router.put('/:id', authMiddleware, authController.updateUser);
-
-// Routes protégées par authentification + admin
-router.post('/register-admin', [authMiddleware, isAdmin], authController.registerAdmin);
-router.delete('/:id', [authMiddleware, isAdmin], authController.deleteUser);
-
+router.delete('/:id', authMiddleware, authController.deleteUser);
+router.get('/', authMiddleware, async (req, res) => {
+        try {
+            const users = await User.find().select('-password');
+            res.json(users);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    });
+    
 module.exports = router;

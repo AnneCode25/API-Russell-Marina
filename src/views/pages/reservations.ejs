@@ -1,0 +1,35 @@
+<!-- views/pages/reservations.ejs -->
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Réservations</h1>
+    </div>
+
+    <%- include('../partials/reservations/list-table') %>
+
+    <!-- Modal Détails -->
+    <div class="modal fade" id="reservationDetailsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Détails de la Réservation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="reservationDetailsContent">
+                    <!-- Contenu dynamique -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
+
+<!-- Scripts spécifiques à la page des réservations -->
+<script src="/js/reservations-manager.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        window.reservationsManager = new ReservationsManager();
+    });
+</script>
