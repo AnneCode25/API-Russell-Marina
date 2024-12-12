@@ -88,6 +88,13 @@ npm test
 4. Push sur la branche (`git push origin feature/amélioration`)
 5. Ouvrir une Pull Request
 
+## URL de déploiement
+- https://api-russell-marina-production.up.railway.app/
+```bash
+Identifiants de test
+```
+- admin2@port-russell.com
+- Admin123!
 ## Auteur
 
 Anne Villette
