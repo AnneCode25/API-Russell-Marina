@@ -1,5 +1,16 @@
+//Imports
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+
+/**
+ * Middleware d'authentification vérifiant le JWT
+ * @async
+ * @param {Object} req - Requête Express
+ * @param {Object} res - Réponse Express
+ * @param {Function} next - Fonction suivante dans la chaîne middleware
+ * @returns {Promise<void>}
+ * @throws {Error} Si le token est invalide ou manquant
+ */
 const authMiddleware = async (req, res, next) => {
     try {
         // 1. Vérifier si le token est présent dans les headers

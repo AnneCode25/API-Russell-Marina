@@ -1,6 +1,19 @@
+//Imports
 const reservationService = require('../services/reservation.service');
 
+/**
+ * Contrôleur gérant les réservations
+ * @namespace ReservationController
+ */
 const reservationController = {
+
+    /**
+     * Récupère toutes les réservations
+     * @async
+     * @param {Object} req - Requête Express
+     * @param {Object} res - Réponse Express
+     * @returns {Promise<void>}
+     */
     getAllReservationsGlobal: async (req, res) => {
         try {
             const reservations = await reservationService.getAllReservations();
@@ -10,6 +23,15 @@ const reservationController = {
         }
     },
 
+    /**
+     * Récupère les réservations d'un catway
+     * @async
+     * @param {Object} req - Requête Express
+     * @param {Object} req.params - Paramètres de la requête
+     * @param {string} req.params.catwayId - ID du catway
+     * @param {Object} res - Réponse Express
+     * @returns {Promise<void>}
+     */
     getReservationsByCatwayId: async (req, res) => {
         try {
             const reservations = await reservationService.getReservationsByCatwayId(req.params.catwayId);

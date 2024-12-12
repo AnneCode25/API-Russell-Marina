@@ -1,7 +1,23 @@
+//Imports
 const authService = require('../services/auth.service');
 
+/**
+ * Contrôleur gérant l'authentification et les utilisateurs
+ * @namespace AuthController
+ */
 const authController = {
-    // Création d'un utilisateur
+
+    /**
+     * Enregistre un nouvel utilisateur
+     * @async
+     * @param {Object} req - Requête Express
+     * @param {Object} req.body - Corps de la requête
+     * @param {string} req.body.name - Nom de l'utilisateur
+     * @param {string} req.body.email - Email de l'utilisateur
+     * @param {string} req.body.password - Mot de passe de l'utilisateur
+     * @param {Object} res - Réponse Express
+     * @returns {Promise<void>}
+     */
     register: async (req, res) => {
         try {
             const result = await authService.register(req.body);
@@ -14,7 +30,16 @@ const authController = {
         }
     },
 
-    // Connexion
+    /**
+     * Authentifie un utilisateur existant
+     * @async
+     * @param {Object} req - Requête Express
+     * @param {Object} req.body - Corps de la requête
+     * @param {string} req.body.email - Email de l'utilisateur
+     * @param {string} req.body.password - Mot de passe de l'utilisateur
+     * @param {Object} res - Réponse Express
+     * @returns {Promise<void>}
+     */
     login: async (req, res) => {
         try {
             const { email, password } = req.body;
@@ -28,7 +53,15 @@ const authController = {
         }
     },
 
-    // Modification d'un utilisateur
+    /**
+     * Met à jour un utilisateur
+     * @async
+     * @param {Object} req - Requête Express
+     * @param {Object} req.params - Paramètres de la requête
+     * @param {string} req.params.id - ID de l'utilisateur
+     * @param {Object} res - Réponse Express
+     * @returns {Promise<void>}
+     */
     updateUser: async (req, res) => {
         try {
             const user = await authService.updateUser(req.params.id, req.body);

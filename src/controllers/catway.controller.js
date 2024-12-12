@@ -1,8 +1,19 @@
+//Imports
 const catwayService = require('../services/catway.service');
 
-// Ce contrôleur contient toutes les méthodes pour gérer les catways
+/**
+ * Contrôleur gérant les catways
+ * @namespace CatwayController
+ */
 const catwayController = {
-    // Obtenir la liste de tous les catways
+
+    /**
+     * Récupère tous les catways
+     * @async
+     * @param {Object} req - Requête Express
+     * @param {Object} res - Réponse Express
+     * @returns {Promise<void>}
+     */
     getAllCatways: async (req, res) => {
         try {
             const catways = await catwayService.getAllCatways();
@@ -11,7 +22,15 @@ const catwayController = {
             res.status(500).json({ message: error.message });
         }
     },
-    // Créer un nouveau catway
+
+    /**
+     * Crée un nouveau catway
+     * @async
+     * @param {Object} req - Requête Express
+     * @param {Object} req.body - Données du catway
+     * @param {Object} res - Réponse Express
+     * @returns {Promise<void>}
+     */
     createCatway: async (req, res) => {
         try {
             const savedCatway = await catwayService.createCatway(req.body);

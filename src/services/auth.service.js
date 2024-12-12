@@ -1,8 +1,23 @@
-// src/services/auth.service.js
+
+//Import 
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 
+/**
+ * Service de gestion de l'authentification et des utilisateurs
+ * @class AuthService
+ */
 class AuthService {
+    
+    /**
+     * Enregistre un nouvel utilisateur dans le système
+     * @param {Object} userData - Données de l'utilisateur à créer
+     * @param {string} userData.name - Nom de l'utilisateur
+     * @param {string} userData.email - Email de l'utilisateur
+     * @param {string} userData.password - Mot de passe de l'utilisateur
+     * @returns {Promise<{token: string, user: Object}>} Token JWT et données utilisateur
+     * @throws {Error} Si l'email est déjà utilisé
+     */
     async register(userData) {
         // Vérification si l'utilisateur existe déjà
         const existingUser = await User.findOne({ email: userData.email });
@@ -27,6 +42,13 @@ class AuthService {
         };
     }
 
+    /**
+     * Authentifie un utilisateur
+     * @param {string} email - Email de l'utilisateur
+     * @param {string} password - Mot de passe de l'utilisateur
+     * @returns {Promise<{token: string, user: Object}>} Token JWT et données utilisateur
+     * @throws {Error} Si les identifiants sont incorrects
+     */
     async login(email, password) {
         // Recherche de l'utilisateur
         const user = await User.findOne({ email });
@@ -53,6 +75,13 @@ class AuthService {
         };
     }
 
+    /**
+     * Met à jour les informations d'un utilisateur
+     * @param {string} userId - ID de l'utilisateur à mettre à jour
+     * @param {Object} updates - Nouvelles données
+     * @returns {Promise<Object>} Utilisateur mis à jour
+     * @throws {Error} Si l'utilisateur n'est pas trouvé
+     */
     async updateUser(userId, updates) {
         // Suppression du mot de passe des mises à jour pour sécurité
         delete updates.password;
@@ -70,6 +99,12 @@ class AuthService {
         return user;
     }
 
+    /**
+     * Supprime un utilisateur
+     * @param {string} userId - ID de l'utilisateur à supprimer
+     * @returns {Promise<Object>} Utilisateur supprimé
+     * @throws {Error} Si l'utilisateur n'est pas trouvé
+     */
     async deleteUser(userId) {
         const user = await User.findByIdAndDelete(userId);
         if (!user) {
@@ -78,6 +113,12 @@ class AuthService {
         return user;
     }
 
+    /**
+     * Récupère le profil d'un utilisateur
+     * @param {string} userId - ID de l'utilisateur
+     * @returns {Promise<Object>} Données du profil utilisateur
+     * @throws {Error} Si l'utilisateur n'est pas trouvé
+     */
     async getProfile(userId) {
         const user = await User.findById(userId).select('-password');
         if (!user) {
@@ -86,6 +127,12 @@ class AuthService {
         return user;
     }
 
+    /**
+     * Génère un token JWT pour l'utilisateur
+     * @private
+     * @param {string} userId - ID de l'utilisateur
+     * @returns {string} Token JWT généré
+     */
     generateToken(userId) {
         return jwt.sign(
             { userId },

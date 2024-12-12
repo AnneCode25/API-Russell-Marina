@@ -1,5 +1,16 @@
 //Imports
 const mongoose = require('mongoose');
+
+
+/**
+ * Schéma Mongoose pour les catways
+ * @typedef {Object} CatwaySchema
+ * @property {number} catwayNumber - Numéro unique du catway
+ * @property {string} type - Type de catway ('long' ou 'short')
+ * @property {string} catwayState - État actuel du catway
+ * @property {Date} createdAt - Date de création
+ * @property {Date} updatedAt - Date de dernière modification
+ */
 const catwaySchema = new mongoose.Schema({
     // Numéro du pont (identifiant unique du catway)
     catwayNumber: {

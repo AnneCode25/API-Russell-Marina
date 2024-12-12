@@ -1,6 +1,16 @@
+//Imports
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-// Définition du schéma utilisateur
+
+/**
+ * Schéma Mongoose pour les utilisateurs
+ * @typedef {Object} UserSchema
+ * @property {string} name - Nom de l'utilisateur
+ * @property {string} email - Email unique de l'utilisateur
+ * @property {string} password - Mot de passe hashé
+ * @property {Date} createdAt - Date de création
+ * @property {Date} updatedAt - Date de dernière modification
+ */
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -37,6 +47,12 @@ userSchema.pre('save', async function(next) {
         next(error);
     }
 });
+
+/**
+ * Compare le mot de passe fourni avec le hash stocké
+ * @param {string} candidatePassword - Mot de passe à vérifier
+ * @returns {Promise<boolean>} True si le mot de passe correspond
+ */
 userSchema.methods.comparePassword = async function(candidatePassword) {
     try {
         return await bcrypt.compare(candidatePassword, this.password);

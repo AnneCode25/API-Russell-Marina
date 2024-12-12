@@ -1,4 +1,8 @@
-// server.js (à la racine du projet)
+/**
+ * Point d'entrée principal de l'application
+ * Configure et démarre le serveur Express avec toutes ses dépendances
+ * @module Server
+ */
 
 // Chargement des variables d'environnement en premier
 require('dotenv').config();
@@ -77,7 +81,12 @@ app.get('/users', (req, res) => {
     res.render('pages/users');
 });
 
-// Fonction de démarrage du serveur
+/**
+ * Démarre le serveur Express et initialise la connexion à la base de données
+ * @async
+ * @function startServer
+ * @returns {Promise<void>}
+ */
 const startServer = async () => {
     try {
         // Connexion à la base de données
