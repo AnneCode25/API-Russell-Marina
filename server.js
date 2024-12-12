@@ -10,6 +10,7 @@ const path = require('path');
 // Imports de nos modules (notez les nouveaux chemins depuis la racine)
 const connectDatabase = require('./src/config/database');
 const routes = require('./src/routes');
+const documentationRoutes = require('./src/routes/documentation.routes');
 
 // Création de l'application Express
 const app = express();
@@ -49,6 +50,8 @@ app.use('/api', routes);
 app.get('/', (req, res) => {
     res.render('pages/home');
 });
+
+app.use('/documentation', documentationRoutes);
 
 app.get('/dashboard', (req, res) => {
     res.render('pages/dashboard');
